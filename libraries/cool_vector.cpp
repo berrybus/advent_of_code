@@ -57,18 +57,10 @@ public:
     return *this;
   }
 
-  friend std::ostream &operator<<(std::ostream &out, const CoolVector<T> &vec) {
-    out << "[";
-    for (size_t i = 0; i < vec.current; i++) {
-      out << vec.arr[i];
-      if (i < vec.current - 1) {
-        out << ", ";
-      }
-    }
-    out << "]";
-    return out;
-  }
+  // Should we bother overriding the move constructor and move assignment?
 
+  // Adds an element to the end of the vector.
+  // Amortized O(1)
   void push_back(const T &val) {
     if (current == capacity) {
       resize();
@@ -78,6 +70,8 @@ public:
     current++;
   }
 
+  // Inserts an element at index
+  // O(n) where n is size of vector
   void insert(size_t index, const T &val) {
     if (index < 0) {
       throw std::out_of_range("cannot insert below 0");
@@ -97,6 +91,8 @@ public:
     current++;
   }
 
+  // Removes and returns the vector at the index
+  // O(n) where n is size of vector
   T &pop_at(size_t index) {
     if (index < 0 || index >= current) {
       throw std::out_of_range("cannot pop from nonexistent index!");
@@ -112,6 +108,8 @@ public:
     return ret;
   }
 
+  // Pops and returns the last element of the vector
+  // O(1)
   T &pop() {
     if (current == 0) {
       throw std::out_of_range("popping from empty array");
@@ -120,6 +118,7 @@ public:
     return arr[current];
   }
 
+  // Returns the element of the vector at index
   T &at(size_t index) {
     if (index < 0 || index >= current) {
       throw std::out_of_range("index not valid");
@@ -128,6 +127,18 @@ public:
   }
 
   size_t size() { return current; }
+
+  friend std::ostream &operator<<(std::ostream &out, const CoolVector<T> &vec) {
+    out << "[";
+    for (size_t i = 0; i < vec.current; i++) {
+      out << vec.arr[i];
+      if (i < vec.current - 1) {
+        out << ", ";
+      }
+    }
+    out << "]";
+    return out;
+  }
 };
 
 int main() {
